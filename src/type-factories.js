@@ -1,7 +1,4 @@
-export default class TypeFactories {
+import RootType from './root';
+import ValueType from './value';
 
-  constructor() {
-    console.log('Hello!');
-  }
-
-}
+export {RootType, ValueType};
