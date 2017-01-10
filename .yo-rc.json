@@ -1,0 +1,16 @@
+{
+  "generator-wupjs": {
+    "module": "type-factories",
+    "description": "Lots of custom types for robustness and predictability",
+    "author": "Jason Lenoble",
+    "email": "jason.lenoble@gmail.com",
+    "github": "jlenoble",
+    "license": "MIT",
+    "transpile": "es2015",
+    "addons": [],
+    "Class": "TypeFactories",
+    "updated": 2017,
+    "created": 2017,
+    "year": "2017"
+  }
+}
