@@ -1,4 +1,4 @@
-import ValueType from '../src/value';
+import {ValueType} from '../src/type-factories';
 import {expect} from 'chai';
 
 describe('ValueType', function () {

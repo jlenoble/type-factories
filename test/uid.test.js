@@ -1,4 +1,4 @@
-import UIDType from '../src/uid';
+import {UIDType} from '../src/type-factories';
 import {expect} from 'chai';
 
 describe('UIDType', function () {

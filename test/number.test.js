@@ -1,4 +1,4 @@
-import NumberType from '../src/number';
+import {NumberType} from '../src/type-factories';
 import {expect} from 'chai';
 
 describe('NumberType', function () {
