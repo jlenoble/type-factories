@@ -24,7 +24,7 @@ export default function ValueType (prototype, descriptors, symbol) {
         return this[_value];
       },
       set: function (value) {
-        this[_value] = value;
+        this[_value] = value && value.value ? value.value : value;
       },
     },
   },

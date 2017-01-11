@@ -27,6 +27,21 @@ describe('ValueType', function () {
       expect(Type(42) + '').to.equal('42');
     });
 
+    it('that can be initialized from same type or another Value type',
+    function () {
+      const Type1 = ValueType();
+      const Type2 = ValueType();
+
+      const a = Type1('dummy');
+      expect(a.value).to.equal('dummy');
+
+      const b = Type1(a);
+      expect(b.value).to.equal('dummy');
+
+      const c = Type2(a);
+      expect(c.value).to.equal('dummy');
+    });
+
     it('that are no singleton', function () {
       const Type = ValueType();
 
