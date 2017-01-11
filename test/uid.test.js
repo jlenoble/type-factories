@@ -25,6 +25,13 @@ describe('UIDType', function () {
         expect(UID1().value).to.equal(2);
       });
 
+      it('ignores initialization args', function () {
+        const UID = UIDType();
+
+        const uid = UID(24);
+        expect(uid.value).to.equal(1);
+      });
+
       it('cannot be modified', function () {
         const UID = UIDType();
 
