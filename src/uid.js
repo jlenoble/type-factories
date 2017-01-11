@@ -20,5 +20,5 @@ export default function UIDType (prefix) {
     },
   };
 
-  return ValueType(prototype, descriptors);
+  return ValueType(prototype, descriptors, _value);
 };
