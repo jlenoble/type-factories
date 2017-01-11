@@ -17,6 +17,7 @@ describe('Integer', function () {
     expect(Integer([123]).value).to.equal(123);
     expect(Integer([12.3, 4.56]).value).to.equal(12);
     expect(Integer(['-12.3', '-4.56']).value).to.equal(-12);
+    expect(Integer(Integer(10.34)).value).to.equal(10);
   });
 
   it('Updating with various values preserves type', function () {
@@ -45,6 +46,8 @@ describe('Integer', function () {
       },
     };
     expect(a.value).to.equal(0);
+    a.value = Integer(10.34);
+    expect(a.value).to.equal(10);
   });
 
   it(`Integers don't bleed on one another`, function () {

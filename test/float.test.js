@@ -17,6 +17,7 @@ describe('Float', function () {
     expect(Float([123]).value).to.equal(123);
     expect(Float([12.3, 4.56]).value).to.equal(12.3);
     expect(Float(['-12.3', '-4.56']).value).to.equal(-12.3);
+    expect(Float(Float(10.34)).value).to.equal(10.34);
   });
 
   it('Updating with various values preserves type', function () {
@@ -45,6 +46,8 @@ describe('Float', function () {
       },
     };
     expect(a.value).to.equal(-0.34);
+    a.value = Float(10.34);
+    expect(a.value).to.equal(10.34);
   });
   it(`Floats don't bleed on one another`, function () {
     // Make sure value is not set on prototype and therefore not shared
