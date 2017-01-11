@@ -1,6 +1,6 @@
 {
   "name": "type-factories",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Lots of custom types for robustness and predictability",
   "main": "lib/type-factories.js",
   "scripts": {
