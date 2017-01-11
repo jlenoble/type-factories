@@ -10,8 +10,8 @@ export default function ValueType (prototype, descriptors, symbol) {
       },
       set: function (value) {
         this[_value] = value;
-      }
-    }
+      },
+    },
   },
   descriptors);
 

@@ -2,7 +2,7 @@ function noop () {}
 
 export default function RootType (prototype, descriptors) {
   const _prototype = Object.assign({}, {
-    initialize: noop
+    initialize: noop,
   }, prototype);
 
   const _descriptors = descriptors || {};
