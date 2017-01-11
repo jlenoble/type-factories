@@ -4,3 +4,6 @@ import UIDType from './uid';
 import NumberType from './number';
 
 export {RootType, ValueType, UIDType, NumberType};
+
+export const Float = NumberType(parseFloat);
+export const Integer = NumberType(parseInt);
