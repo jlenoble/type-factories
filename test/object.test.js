@@ -25,8 +25,8 @@ describe('ObjectType', function () {
       a: 'bar',
     });
 
-    expect(t.i).to.be.undefined;
-    expect(t.a).to.be.undefined;
+    expect(t.i).to.equal(10);
+    expect(t.a).to.equal('bar');
   });
 
   it('Calling ctor with Value types creates a functional type', function () {

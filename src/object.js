@@ -1,5 +1,6 @@
 import RootType from './root';
 import {Float} from './number';
+import {Text} from './string';
 import {error} from 'explanation';
 
 export default function ObjectType (propTypes, prototype, descriptors, symbol) {
@@ -12,6 +13,10 @@ export default function ObjectType (propTypes, prototype, descriptors, symbol) {
     switch (Type) {
     case Number:
       _propTypes[key] = Float;
+      break;
+
+    case String:
+      _propTypes[key] = Text;
       break;
 
     default:
