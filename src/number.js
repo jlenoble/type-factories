@@ -19,3 +19,6 @@ export default function NumberType (parseFunc, prototype, descriptors, symbol) {
 
   return ValueType(_prototype, _descriptors, _value);
 };
+
+export const Float = NumberType(parseFloat);
+export const Integer = NumberType(parseInt);
