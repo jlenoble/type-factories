@@ -1,0 +1,77 @@
+import {ObjectType, Float, Integer} from '../src/type-factories';
+import {expect} from 'chai';
+
+describe('ObjectType', function () {
+  it('Calling ctor with no args creates a useless type', function () {
+    const Type = ObjectType();
+
+    const t = Type({
+      foo: 'bar',
+    });
+    expect(t.foo).to.be.undefined;
+
+    t.foo = 'bar';
+    expect(t.foo).to.equal('bar');
+  });
+
+  it('Calling ctor with native types Number or String works', function () {
+    const Type = ObjectType({
+      i: Number,
+      a: String,
+    });
+
+    const t = Type({
+      i: 10,
+      a: 'bar',
+    });
+
+    expect(t.i).to.be.undefined;
+    expect(t.a).to.be.undefined;
+  });
+
+  it('Calling ctor with Value types creates a functional type', function () {
+    const Type = ObjectType({
+      a: Float,
+      b: Float,
+      i: Integer,
+      j: Integer,
+    });
+
+    let t = Type();
+    expect(t.a).to.be.NaN;
+    expect(t.b).to.be.NaN;
+    expect(t.i).to.be.NaN;
+    expect(t.j).to.be.NaN;
+
+    t = Type({
+      a: 'dummy',
+      b: 3.2e-5,
+      i: '72',
+    });
+    expect(t.a).to.be.NaN;
+    expect(t.b).to.equal(3.2e-5);
+    expect(t.i).to.equal(72);
+    expect(t.j).to.be.NaN;
+
+    let s = Type(t);
+    expect(s.a).to.be.NaN;
+    expect(s.b).to.equal(3.2e-5);
+    expect(s.i).to.equal(72);
+    expect(s.j).to.be.NaN;
+
+    t.a = '23e3';
+    t.b = 45.2;
+    t.i = '453e-1';
+    t.j = -12;
+    expect(t.a).to.equal(23000);
+    expect(t.b).to.equal(45.2);
+    expect(t.i).to.equal(453);
+    expect(t.j).to.equal(-12);
+
+    s.props = t;
+    expect(s.a).to.equal(23000);
+    expect(s.b).to.equal(45.2);
+    expect(s.i).to.equal(453);
+    expect(s.j).to.equal(-12);
+  });
+});

@@ -7,9 +7,11 @@ export default function RootType (prototype, descriptors) {
 
   const _descriptors = descriptors || {};
 
-  return function (...args) {
+  function Root (...args) {
     const obj = Object.create(_prototype, _descriptors);
     obj.initialize(...args);
     return obj;
   };
+
+  return Root;
 }

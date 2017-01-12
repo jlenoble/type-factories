@@ -22,5 +22,8 @@ export default function PrecisionType (precision = 21) {
     },
   };
 
-  return NumberType(undefined, undefined, descriptors, _value);
+  const Type = NumberType(undefined, undefined, descriptors, _value);
+  Object.defineProperty(Type, 'name', {value: 'Precision'});
+
+  return Type;
 };

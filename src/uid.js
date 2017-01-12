@@ -20,5 +20,8 @@ export default function UIDType (prefix) {
     },
   };
 
-  return ValueType(prototype, descriptors, _value);
+  const Type = ValueType(prototype, descriptors, _value);
+  Object.defineProperty(Type, 'name', {value: 'UID'});
+
+  return Type;
 };

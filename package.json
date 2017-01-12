@@ -41,5 +41,7 @@
     "muter": "^0.5.0",
     "plumb-gulp": "^0.1.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "explanation": "^0.1.1"
+  }
 }

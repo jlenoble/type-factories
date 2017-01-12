@@ -30,5 +30,8 @@ export default function ValueType (prototype, descriptors, symbol) {
   },
   descriptors);
 
-  return RootType(_prototype, _descriptors);
+  const Type = RootType(_prototype, _descriptors);
+  Object.defineProperty(Type, 'name', {value: 'Value'});
+
+  return Type;
 }

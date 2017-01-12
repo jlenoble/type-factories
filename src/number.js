@@ -24,11 +24,22 @@ export default function NumberType (parseFunc, prototype, descriptors, symbol) {
         this[_value] = parseFunc(value, 10);
       },
     },
+    isValueType: {
+      get () {
+        return true;
+      },
+    },
   },
   descriptors);
 
-  return ValueType(_prototype, _descriptors, _value);
+  const Type = ValueType(_prototype, _descriptors, _value);
+  Object.defineProperty(Type, 'name', {value: 'Number (derived from Value)'});
+
+  return Type;
 };
 
 export const Float = NumberType(parseFloat);
+Object.defineProperty(Float, 'name', {value: 'Float'});
+
 export const Integer = NumberType(parseInt);
+Object.defineProperty(Integer, 'name', {value: 'Integer'});
