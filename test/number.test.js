@@ -30,4 +30,12 @@ describe('NumberType', function () {
     t.value = 400.;
     expect(t.value).to.equal(Math.sin(400));
   });
+
+  it('Testing toPrecision, toFixed, toExponential', function () {
+    const Type = NumberType(parseFloat);
+
+    expect(Type(12345).toPrecision(2)).to.equal('1.2e+4');
+    expect(Type(12345).toFixed(2)).to.equal('12345.00');
+    expect(Type(12345).toExponential(2)).to.equal('1.23e+4');
+  });
 });
