@@ -1,9 +1,11 @@
 import ValueType from './value';
 
-export default function NumberType (parseFunc) {
-  const _value = Symbol();
+export default function NumberType (parseFunc, prototype, descriptors, symbol) {
+  const _value = typeof symbol === 'symbol' ? symbol : Symbol();
 
-  const descriptors = {
+  const _prototype = Object.assign({}, prototype);
+
+  const _descriptors = Object.assign({
     value: {
       get () {
         return this[_value];
@@ -12,7 +14,8 @@ export default function NumberType (parseFunc) {
         this[_value] = parseFunc(value, 10);
       },
     },
-  };
+  },
+  descriptors);
 
-  return ValueType(undefined, descriptors, _value);
+  return ValueType(_prototype, _descriptors, _value);
 };
