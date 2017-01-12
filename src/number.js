@@ -24,11 +24,6 @@ export default function NumberType (parseFunc, prototype, descriptors, symbol) {
         this[_value] = parseFunc(value, 10);
       },
     },
-    isValueType: {
-      get () {
-        return true;
-      },
-    },
   },
   descriptors);
 

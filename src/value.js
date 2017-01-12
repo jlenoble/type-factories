@@ -27,6 +27,11 @@ export default function ValueType (prototype, descriptors, symbol) {
         this[_value] = value && value.value ? value.value : value;
       },
     },
+    isValueType: {
+      get () {
+        return true;
+      },
+    },
   },
   descriptors);
 
