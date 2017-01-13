@@ -74,4 +74,52 @@ describe('ObjectType', function () {
     expect(s.i).to.equal(453);
     expect(s.j).to.equal(-12);
   });
+
+  it('Updating with native types Number or String works', function () {
+    const Type = ObjectType({
+      i: Number,
+      a: String,
+    });
+
+    const model = {
+      i: 10,
+      a: 'bar',
+    };
+    let t = Type();
+
+    t.i = model;
+    t.a = model;
+
+    expect(t.i).to.equal(10);
+    expect(t.a).to.equal('bar');
+  });
+
+  it('Updating with Value types creates a functional type', function () {
+    const Type = ObjectType({
+      a: Float,
+      b: Float,
+      i: Integer,
+      j: Integer,
+    });
+
+    let t = Type();
+    expect(t.a).to.be.NaN;
+    expect(t.b).to.be.NaN;
+    expect(t.i).to.be.NaN;
+    expect(t.j).to.be.NaN;
+
+    const m1 = {
+      a: 'dummy',
+      b: 3.2e-5,
+      i: '72',
+    };
+
+    t.a = m1;
+    t.b = m1;
+    t.i = m1;
+    expect(t.a).to.be.NaN;
+    expect(t.b).to.equal(3.2e-5);
+    expect(t.i).to.equal(72);
+    expect(t.j).to.be.NaN;
+  });
 });

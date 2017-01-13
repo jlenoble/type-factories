@@ -66,7 +66,8 @@ export default function ObjectType (propTypes, prototype, descriptors, symbol) {
         return this[_props][key].value;
       },
       set (props) {
-        this[_props][key].value = props;
+        this[_props][key].value = props && props[key] !== undefined ?
+          props[key] : props;
       },
     };
   }
