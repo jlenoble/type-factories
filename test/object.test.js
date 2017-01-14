@@ -25,8 +25,8 @@ describe('ObjectType', function () {
       a: 'bar',
     });
 
-    expect(t.i).to.equal(10);
-    expect(t.a).to.equal('bar');
+    expect(+t.i).to.equal(10);
+    expect(t.a.toString()).to.equal('bar');
   });
 
   it('Calling ctor with Value types creates a functional type', function () {
@@ -48,31 +48,31 @@ describe('ObjectType', function () {
       b: 3.2e-5,
       i: '72',
     });
-    expect(t.a).to.be.NaN;
-    expect(t.b).to.equal(3.2e-5);
-    expect(t.i).to.equal(72);
-    expect(t.j).to.be.NaN;
+    expect(t.a.value).to.be.NaN;
+    expect(t.b.value).to.equal(3.2e-5);
+    expect(t.i.value).to.equal(72);
+    expect(t.j.value).to.be.NaN;
 
     let s = Type(t);
-    expect(s.a).to.be.NaN;
-    expect(s.b).to.equal(3.2e-5);
-    expect(s.i).to.equal(72);
-    expect(s.j).to.be.NaN;
+    expect(s.a.value).to.be.NaN;
+    expect(s.b.value).to.equal(3.2e-5);
+    expect(s.i.value).to.equal(72);
+    expect(s.j.value).to.be.NaN;
 
     t.a = '23e3';
     t.b = 45.2;
     t.i = '453e-1';
     t.j = -12;
-    expect(t.a).to.equal(23000);
-    expect(t.b).to.equal(45.2);
-    expect(t.i).to.equal(453);
-    expect(t.j).to.equal(-12);
+    expect(t.a.value).to.equal(23000);
+    expect(t.b.value).to.equal(45.2);
+    expect(t.i.value).to.equal(453);
+    expect(t.j.value).to.equal(-12);
 
     s.props = t;
-    expect(s.a).to.equal(23000);
-    expect(s.b).to.equal(45.2);
-    expect(s.i).to.equal(453);
-    expect(s.j).to.equal(-12);
+    expect(s.a.value).to.equal(23000);
+    expect(s.b.value).to.equal(45.2);
+    expect(s.i.value).to.equal(453);
+    expect(s.j.value).to.equal(-12);
   });
 
   it('Updating with native types Number or String works', function () {
@@ -90,8 +90,8 @@ describe('ObjectType', function () {
     t.i = model;
     t.a = model;
 
-    expect(t.i).to.equal(10);
-    expect(t.a).to.equal('bar');
+    expect(t.i.value).to.equal(10);
+    expect(t.a.value).to.equal('bar');
   });
 
   it('Updating with Value types creates a functional type', function () {
@@ -103,10 +103,10 @@ describe('ObjectType', function () {
     });
 
     let t = Type();
-    expect(t.a).to.be.NaN;
-    expect(t.b).to.be.NaN;
-    expect(t.i).to.be.NaN;
-    expect(t.j).to.be.NaN;
+    expect(t.a.value).to.be.NaN;
+    expect(t.b.value).to.be.NaN;
+    expect(t.i.value).to.be.NaN;
+    expect(t.j.value).to.be.NaN;
 
     const m1 = {
       a: 'dummy',
@@ -117,9 +117,9 @@ describe('ObjectType', function () {
     t.a = m1;
     t.b = m1;
     t.i = m1;
-    expect(t.a).to.be.NaN;
-    expect(t.b).to.equal(3.2e-5);
-    expect(t.i).to.equal(72);
-    expect(t.j).to.be.NaN;
+    expect(t.a.value).to.be.NaN;
+    expect(t.b.value).to.equal(3.2e-5);
+    expect(t.i.value).to.equal(72);
+    expect(t.j.value).to.be.NaN;
   });
 });

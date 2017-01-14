@@ -63,7 +63,7 @@ export default function ObjectType (propTypes, prototype, descriptors, symbol) {
   function makeDescriptor (key) {
     return {
       get () {
-        return this[_props][key].value;
+        return this[_props][key];
       },
       set (props) {
         this[_props][key].value = props && props[key] !== undefined ?

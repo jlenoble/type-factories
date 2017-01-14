@@ -91,9 +91,9 @@ describe(`Testing README.md examples`, function () {
 
     const employee = Employee(Bob, programmer);
 
-    expect(employee.firstName).to.equal('Bob');
-    expect(employee.lastName).to.equal('Smith');
-    expect(employee.job).to.equal('programmer');
+    expect(employee.firstName.toString()).to.equal('Bob');
+    expect(employee.lastName.toString()).to.equal('Smith');
+    expect(employee.job.toString().toString()).to.equal('programmer');
 
     const director = Employee({
       firstName: 'Martha',
@@ -103,14 +103,14 @@ describe(`Testing README.md examples`, function () {
 
     const Martha = Person(director);
 
-    expect(Martha.firstName).to.equal('Martha');
-    expect(Martha.lastName).to.equal('Graham');
+    expect(Martha.firstName.toString()).to.equal('Martha');
+    expect(Martha.lastName.toString()).to.equal('Graham');
     expect(Martha.job).to.be.undefined;
 
     const job = Job(director);
 
     expect(job.firstName).to.be.undefined;
     expect(job.lastName).to.be.undefined;
-    expect(job.job).to.equal('director');
+    expect(job.job.toString()).to.equal('director');
   });
 });

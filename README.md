@@ -141,9 +141,9 @@ const programmer = Job({
 
 const employee = Employee(Bob, programmer);
 
-employee.firstName; // 'Bob'
-employee.lastName; // 'Smith'
-employee.job; // 'programmer'
+employee.firstName.toString(); // 'Bob'
+employee.lastName.toString(); // 'Smith'
+employee.job.toString(); // 'programmer'
 
 const director = Employee({
   firstName: 'Martha',
@@ -153,15 +153,15 @@ const director = Employee({
 
 const Martha = Person(director);
 
-Martha.firstName; // 'Martha'
-Martha.lastName; // 'Graham'
+Martha.firstName.toString(); // 'Martha'
+Martha.lastName.toString(); // 'Graham'
 Martha.job; // undefined
 
 const job = Job(director);
 
 job.firstName; // undefined
 job.lastName; // undefined
-job.job; // 'director'
+job.job.toString(); // 'director'
 ```
 
 ## License
