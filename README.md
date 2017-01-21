@@ -5,11 +5,9 @@ Lots of custom types for robustness and predictability
 
 * [Another type factory?](#another-type-factory)
 * [Available factories](#available-factories)
-  * [NumberType](#numbertype)
-  * [PrecisionType](#precisiontype)
-  * [StringType](#stringtype)
-  * [UIDType](#uidtype)
-  * [ObjectType](#objecttype)
+  * [makeValueType(BaseType, handler)](#makevaluetypebasetype-handler)
+  * [makeDataType(Types)](#makedatatypetypes)
+  * [makeListType(Type, handler)](#makelisttypetype-handler)
 * [License](#license)
 
 ## Another type library?
@@ -18,150 +16,97 @@ There is so much boiler plate when handling data: Validating, converting, loopin
 
 ## Available factories
 
-### ValueType
+### ```makeValueType(BaseType, handler)```
 
-A generic factory used by number and string types.
+Types generated from this factory are scalar/1D in nature. They handle numbers and strings for the most part. The handler parameters allows to set conditions
+on teh contained data.
 
 ```js
-import {ValueType} from 'type-factories';
+import {makeValueType} from 'type-factories';
 
-const Value = ValueType();
-const s = Value('foo');
-const d = Value(20);
+const Integer = makeValueType(Number, {
+  set (target, key, value) {
+    if (key === 'value') {
+      target.value = value === undefined ? 0 : Math.trunc(Number(value));
+    } else {
+      target[key] = value;
+    }
+    return true;
+  }
+});
 
-s.value; // 'foo'
-d.value; // 20
+Integer(2.4) === 2; // true
 
-s.value += 'bar';
-s.value; // 'foobar'
-
-d.value *= 5;
-d.value; // 100
-
-s.value += d; // Implicit conversion to base type
-s.value; // 'foobar100'
+const i = new Integer('36.9');
+i + i * 2.5 === 126;  // not 129.15
 ```
 
-### NumberType
+### ```makeDataType(Types)```
 
-This factory requires a function argument that returns a number.
+Types generated from this factory are a mixte bag of Value types. They are objects with strongly typed public properties.
 
 ```js
-import {NumberType} from 'type-factories';
+import {makeDataType} from 'type-factories';
 
-const Func = NumberType(function (x) {
-  const _x = parseFloat(x, 10);
-  return _x * _x + 2;
+const Person = makeDataType({
+  name: String,
+  age: Number,
+  female: Boolean
 });
 
-const a = Func(0);
-const b = Func(1);
-const c = Func(2);
+const person = new Person({
+  name: 'John Doe',
+  age: '55'
+});
 
-a.value; // 2
-b.value; // 3
-c.value; // 6
+person.name === 'John Doe'; // true
+person.age === 55; // true
+person.female === false; // true
 
-c.value = a + b; // Implicit conversions and computation
-c.value; // 27 === (2+3)**2 + 2
+person.value = {
+  name: 'John H. Doe',
+  age: 56
+};
+
+person.name === 'John H. Doe'; // true
+person.age === 56; // true
+
+person.age = {
+  name: 'Patrick Gray',
+  age: '10',
+};
+person.name === 'John H. Doe'; // not 'Patrick Gray'
+person.age === 10; // true
 ```
 
-### PrecisionType
+### ```makeListType(Type, handler)```
 
-This factory requires an integer argument between 1 and 21;
-
-```js
-import {PrecisionType} from 'type-factories';
-
-const Approx = PrecisionType(6);
-
-+Approx(123456789); // 123457000 (rounded to closest)
-+Approx(.987654321); // .987654
-
-+Approx(Approx(34e3) + Approx(-34e-3)); // 34000
-```
-
-### StringType
+Types from this factory are vectorial/multiD in nature. They handle list of same Value type instances. The handler helps override some default behaviors
 
 ```js
-import {StringType} from 'type-factories';
+import {makeListType} from 'type-factories';
 
-const Str = StringType();
-
-Str(100) + Str(10); // '10010'
-```
-
-### UIDType
-
-This factory can take a string as argument to represent a prefix. Uids start
-at 1 and are indepent types.
-
-```js
-import {UIDType} from 'type-factories';
-
-const UID = UIDType('id');
-const CID = UIDType('c');
-
-UID().value; // 'id1'
-UID().value; // 'id2'
-CID().value; // 'c1'
-UID().value; // 'id3'
-```
-
-### ObjectType
-
-This type factory make the other type factories above useful! Object types can be used very flexibly to set other Object types. Their attributes are always what they were set to be. See the following example.
-
-```js
-import {ObjectType} from 'type-factories';
-
-const Person = ObjectType({
-  firstName: String,
-  lastName: String
+const Players = makeListType({
+  number: Number,
+  name: String
 });
 
-const Job = ObjectType({
-  job: String
+const players = new Players({
+  number: 1,
+  name: 'Kasparov'
+},
+{
+  number: 2,
+  name: 'Karpov'
 });
 
-const Employee = ObjectType({
-  firstName: String,
-  lastName: String,
-  job: String
+players.push({
+  number: '3',
+  name: 'Fischer'
 });
 
-const Bob = Person({
-  firstName: 'Bob',
-  lastName: 'Smith'
-});
-
-const programmer = Job({
-  job: 'programmer'
-});
-
-const employee = Employee(Bob, programmer);
-
-employee.firstName.toString(); // 'Bob'
-employee.lastName.toString(); // 'Smith'
-employee.job.toString(); // 'programmer'
-
-const director = Employee({
-  firstName: 'Martha',
-  lastName: 'Graham',
-  job: 'director'
-});
-
-const Martha = Person(director);
-
-Martha.firstName.toString(); // 'Martha'
-Martha.lastName.toString(); // 'Graham'
-Martha.job; // undefined
-
-const job = Job(director);
-
-job.firstName; // undefined
-job.lastName; // undefined
-job.job.toString(); // 'director'
+players.length === 3;
+players[2].number === 3; // not '3'
 ```
 
 ## License

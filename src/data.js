@@ -58,7 +58,7 @@ export default function makeDataType (propTypes) {
               'Setting Data as a whole from a non-object is meaningless');
           }
           Object.keys(_propTypes).forEach(key => {
-            if (key in value) {
+            if (value && value[key] !== undefined) {
               target[key].value = value[key];
             }
           });
@@ -67,7 +67,11 @@ export default function makeDataType (propTypes) {
         if (typeof key !== 'symbol' && !isNaN(key)) {
           key = Number(key);
         }
-        target[key].value = value;
+        if (value && value[key] !== undefined) {
+          target[key].value = value[key];
+        } else {
+          target[key].value = value;
+        }
         return true;
       },
       deleteProperty (target, key) {

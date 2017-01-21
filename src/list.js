@@ -1,6 +1,10 @@
 import {defaultHandler, makeMethod} from './helpers';
+import makeDataType from './data';
 
-export default function makeListType (Type, handler = defaultHandler) {
+export default function makeListType (_Type, handler = defaultHandler) {
+  // If an object is passed, substitute a Data type
+  const Type = typeof _Type === 'object' ? makeDataType(_Type) : _Type;
+
   // Boolean to help formatting string outputs with proper quotes
   const isString = typeof Type() === 'string';
 
