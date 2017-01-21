@@ -1,59 +1,67 @@
-import {Float} from '../src/type-factories';
+import {Float} from '../src/value';
 import {expect} from 'chai';
 
-describe('Float', function () {
-  it(`Initializing with various args don't break type`, function () {
-    // NB: parseFloat implicitly calls toString on objects, therefore some
-    // wierd edge behaviors!
-    expect(Float().value).to.be.NaN;
-    expect(Float(12).value).to.equal(12);
-    expect(Float(-1234.123).value).to.equal(-1234.123);
-    expect(Float('34.5foo').value).to.equal(34.5);
-    expect(Float({
-      value: 12,
-    }).value).to.be.NaN;
-    expect(Float(12345e-3).value).to.equal(12.345);
-    expect(Float([]).value).to.be.NaN;
-    expect(Float([123]).value).to.equal(123);
-    expect(Float([12.3, 4.56]).value).to.equal(12.3);
-    expect(Float(['-12.3', '-4.56']).value).to.equal(-12.3);
-    expect(Float(Float(10.34)).value).to.equal(10.34);
+describe('Testing Float', function () {
+  before(function () {
+    this.create = function (value) {
+      return new Float(value);
+    };
+
+    this.set = function (value) {
+      const d = new Float(0);
+      d.value = value;
+      return d;
+    };
+
+    this.execGood = function (func, value) {
+      expect(func.bind(undefined, value)).not.to.throw();
+      expect(func(value).value).not.to.be.undefined;
+      expect(func(value).value).to.equal(value === undefined ? 0 :
+        Number(value));
+    };
+
+    this.execBad = function (func, value) {
+      expect(func.bind(undefined, value)).not.to.throw();
+      expect(func(value).value).not.to.be.undefined;
+      expect(func(value).value).to.be.NaN;
+    };
+
+    this.execThrow = function (func) {
+      expect(func).to.throw(TypeError);
+    };
+  })
+
+  it('Initializing with a number is Ok', function () {
+    this.execGood(this.create, 23);
+    this.execGood(this.create, 23.45);
+    this.execGood(this.create, -.23e-8);
+    this.execGood(this.create, '23e23');
+    this.execGood(this.create, '-123.45');
+    this.execGood(this.create, undefined);
   });
 
-  it('Updating with various values preserves type', function () {
-    // NB: parseFloat implicitly calls toString on objects, therefore some
-    // wierd edge behaviors!
-    const a = Float();
-    expect(a.value).to.be.NaN;
-    a.value = 12;
-    expect(a.value).to.equal(12);
-    a.value = -1234.123;
-    expect(a.value).to.equal(-1234.123);
-    a.value = '34.5foo';
-    expect(a.value).to.equal(34.5);
-    a.value = {
-      value: 12,
-    };
-    expect(a.value).to.be.NaN;
-    a.value = 12345e-3;
-    expect(a.value).to.equal(12.345);
-    a.value = Float('.123bar');
-    expect(a.value).to.equal(0.123);
-    a.value = {
-      baz: ['-.34.5foo', {}, 456],
-      toString: function () {
-        return '' + parseFloat(this.baz, 10);
-      },
-    };
-    expect(a.value).to.equal(-0.34);
-    a.value = Float(10.34);
-    expect(a.value).to.equal(10.34);
+  it('Initializing with not a number is Ok', function () {
+    this.execBad(this.create, NaN);
+    this.execBad(this.create, /hello.*/);
+    this.execBad(this.create, '24BAD');
+    this.execBad(this.create, function () {});
+    this.execBad(this.create, {});
   });
-  it(`Floats don't bleed on one another`, function () {
-    // Make sure value is not set on prototype and therefore not shared
-    const a = Float(123.4);
-    const b = Float(4.321);
-    expect(a.value).to.equal(123.4);
-    expect(b.value).to.equal(4.321);
+
+  it('Setting value property with a number is OK', function () {
+    this.execGood(this.set, 23);
+    this.execGood(this.set, 23.45);
+    this.execGood(this.set, -.23e-8);
+    this.execGood(this.set, '23e23');
+    this.execGood(this.set, '-123.45');
+    this.execGood(this.set, undefined);
+  });
+
+  it('Setting value property with not a number is Ok', function () {
+    this.execBad(this.set, NaN);
+    this.execBad(this.set, /hello.*/);
+    this.execBad(this.set, '24BAD');
+    this.execBad(this.set, function () {});
+    this.execBad(this.set, {});
   });
 });
