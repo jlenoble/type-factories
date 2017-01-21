@@ -1,3 +1,3 @@
-import makeValueType, {Bool, Float, Integer} from './value';
+import makeValueType, {Bool, Float, Integer, Text} from './value';
 
-export {makeValueType, Bool, Float, Integer};
+export {makeValueType, Bool, Float, Integer, Text};

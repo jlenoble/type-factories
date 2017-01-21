@@ -72,3 +72,13 @@ export const Integer = makeValueType(Number, {
     return true;
   }
 });
+
+export const Text = makeValueType(String, {
+  get (target, key) {
+    if (typeof key === 'symbol' || isNaN(key)) {
+      return target[key];
+    }
+    // Handle read-only string[index] access
+    return target.value[Number(key)];
+  },
+});
