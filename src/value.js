@@ -56,4 +56,5 @@ export default function makeValueType (BaseType, handler) {
   return Value;
 }
 
+export const Bool = makeValueType(Boolean);
 export const Float = makeValueType(Number);

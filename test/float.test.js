@@ -1,4 +1,4 @@
-import {Float} from '../src/value';
+import {Float} from '../src/type-factories';
 import {expect} from 'chai';
 
 describe('Testing Float', function () {
