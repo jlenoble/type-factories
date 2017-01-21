@@ -58,3 +58,17 @@ export default function makeValueType (BaseType, handler) {
 
 export const Bool = makeValueType(Boolean);
 export const Float = makeValueType(Number);
+
+export const Integer = makeValueType(Number, {
+  set (target, key, value) {
+    if (key === 'value') {
+      // Always convert to integer
+      target.value = value === undefined ? 0 : Math.trunc(Number(value));
+    } else {
+      // We rely on the above seal in Value ctor to throw a meaningful error
+      // when attempting to set any other property than value
+      target[key] = value;
+    }
+    return true;
+  }
+});
