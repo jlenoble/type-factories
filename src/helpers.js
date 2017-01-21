@@ -33,13 +33,13 @@ const defaultHandler = {
   enumerate (target) {
     // May not work any more as enumerate was removed from specs (Jan2017)
     return Object.keys(target.value)[Symbol.iterator]();
-  }
+  },
 };
 
 // The container serves as a proxy for its contained array...
 function makeMethod (name) {
-  return function () {
-    return this.value[name](...arguments);
+  return function (...args) {
+    return this.value[name](...args);
   };
 }
 

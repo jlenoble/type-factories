@@ -63,7 +63,7 @@ export default function makeDataType (propTypes) {
       },
       deleteProperty (target, key) {
         return false;
-      }
+      },
     };
 
     // Define proxy for private data
@@ -87,15 +87,15 @@ export default function makeDataType (propTypes) {
         switch (name) {
         case 'toString': case 'toLocaleString':
           Object.defineProperty(Data.prototype, name, {
-            value: function () {
-                return '{\n' + Object.getOwnPropertyNames(this)
+            value: function (...args) {
+              return '{\n' + Object.getOwnPropertyNames(this)
                 .map(key => {
                   const prop = this[key];
                   return typeof prop === 'string' ? `  ${key}: '${prop[name](
-                    ...arguments)}'` : `  ${key}: ${prop[name](...arguments)}`;
+                    ...args)}'` : `  ${key}: ${prop[name](...args)}`;
                 }).join(',\n') + '\n}';
-              },
-            });
+            },
+          });
           break;
 
         default:

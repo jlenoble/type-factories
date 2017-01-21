@@ -4,10 +4,10 @@ export default function makeListType (Type, handler = defaultHandler) {
   // Boolean to help formatting string outputs with proper quotes
   const isString = typeof Type() === 'string';
 
-  function List () {
+  function List (...args) {
     if (!this) {
       // List is used as converter; no context is set
-      return (new List(...arguments)).value;
+      return (new List(...args)).value;
     }
 
     // Private array
@@ -30,7 +30,7 @@ export default function makeListType (Type, handler = defaultHandler) {
           target[Number(key)] = Type(value);
         }
         return true;
-      }
+      },
     };
 
     // Define proxy for private array
@@ -51,7 +51,7 @@ export default function makeListType (Type, handler = defaultHandler) {
       set (len) {
         // Use proxy to trap initialization of new elements
         this.value.length = len;
-      }
+      },
     });
 
     // A List object should not be tempered with
@@ -61,7 +61,7 @@ export default function makeListType (Type, handler = defaultHandler) {
     const proxy = new Proxy(this, handler);
 
     // Set private value through proxy, ensuring conversion
-    proxy.push(...arguments);
+    proxy.push(...args);
 
     return proxy;
   }
@@ -76,29 +76,29 @@ export default function makeListType (Type, handler = defaultHandler) {
         case 'toString': case 'toLocaleString':
           Object.defineProperty(List.prototype, name, {
             value: isString ?
-              function () {
-                return '["' + this.value.map(el => el[name](...arguments))
+              function (...args) {
+                return '["' + this.value.map(el => el[name](...args))
                   .join('", "') + '"]';
               } :
-              function () {
-                return '[' + this.value.map(el => el[name](...arguments))
+              function (...args) {
+                return '[' + this.value.map(el => el[name](...args))
                   .join(', ') + ']';
               },
-            });
+          });
           break;
 
         case 'concat':
           Object.defineProperty(List.prototype, name, {
-            value: function () {
-              return this.value.concat(List(...[].concat(...arguments)));
+            value: function (...args) {
+              return this.value.concat(List(...[].concat(...args)));
             },
           });
           break;
 
         default:
-        Object.defineProperty(List.prototype, name, {
-          value: makeMethod(name),
-        });
+          Object.defineProperty(List.prototype, name, {
+            value: makeMethod(name),
+          });
         }
       }
     }
@@ -111,15 +111,15 @@ export default function makeListType (Type, handler = defaultHandler) {
         throw new ReferenceError(
           `Mirror array method 'values' left undefined due to lack of` +
           `support in your environment`);
-        },
-      });
+      },
+    });
   }
 
   // Add Symbol.iterator function
   Object.defineProperty(List.prototype, Symbol.iterator, {
     value: function () {
       return this.value[Symbol.iterator]();
-    }
+    },
   });
 
   // Don't override default behaviors; List must always work as intended
