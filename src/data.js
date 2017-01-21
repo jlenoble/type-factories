@@ -30,6 +30,11 @@ export default function makeDataType (propTypes) {
   });
 
   function Data (...args) {
+    if (!this) {
+      // Data is used as converter; no context is set
+      return (new Data(...args));
+    }
+
     // Initialize data with defaults
     Object.keys(_propTypes).forEach(key => {
       this[key] = new _propTypes[key]();
@@ -48,6 +53,10 @@ export default function makeDataType (propTypes) {
       },
       set (target, key, value) {
         if (key === 'value') { // Generic accessor to set from any object
+          if (typeof value !== 'object') {
+            throw new TypeError(
+              'Setting Data as a whole from a non-object is meaningless');
+          }
           Object.keys(_propTypes).forEach(key => {
             if (key in value) {
               target[key].value = value[key];
@@ -105,8 +114,25 @@ export default function makeDataType (propTypes) {
     }
   });
 
+  // Define a helper to compare Data instances
+  Object.defineProperties(Data.prototype, {
+    equiv: {
+      value: function (obj) {
+        return Object.keys(_propTypes).every(key => {
+          return this[key] === obj[key];
+        });
+      },
+    },
+  });
+
+  // Define boolean to mark this kind of type
+  Object.defineProperty(Data, 'isData', {
+    value: true,
+  });
+
   // Don't override default behaviors; Data must always work as intended
   Object.freeze(Data.prototype);
+  Object.freeze(Data);
 
   return Data;
 }

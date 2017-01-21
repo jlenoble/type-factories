@@ -54,6 +54,38 @@ export default function makeListType (Type, handler = defaultHandler) {
       },
     });
 
+    // Override indexOf/lastIndexOf for _value w/o overriding Array prototype
+    // when type is a Data type: we want then loose equality
+    if (Type.isData) {
+      Object.defineProperties(_value, {
+        indexOf: {
+          value: function (obj, start) {
+            let idx = start !== undefined ? start : 0;
+            const len = _value.length;
+            for (;idx < len; idx++) {
+              if (_value[idx].equiv(obj)) {
+                break;
+              }
+            }
+            return idx < len ? idx : -1;
+          },
+        },
+        lastIndexOf: {
+          value: function (obj, start) {
+            let idx = start !== undefined ? start : 0;
+            let last = -1;
+            const len = _value.length;
+            for (;idx < len; idx++) {
+              if (_value[idx].equiv(obj)) {
+                last = idx;
+              }
+            }
+            return last;
+          },
+        },
+      });
+    }
+
     // A List object should not be tempered with
     Object.seal(this);
 
