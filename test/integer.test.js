@@ -28,8 +28,8 @@ describe('Testing Integer', function () {
 
     this.execThrow = function (func) {
       expect(func).to.throw(TypeError);
-    }
-  })
+    };
+  });
 
   it('Initializing with a number is Ok', function () {
     this.execGood(this.create, 23);

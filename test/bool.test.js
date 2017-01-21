@@ -25,8 +25,8 @@ describe('Testing Bool', function () {
 
     this.execThrow = function (func) {
       expect(func).to.throw(TypeError);
-    }
-  })
+    };
+  });
 
   it('Initializing with anything is Ok', function () {
     this.execGood(this.create, 23);

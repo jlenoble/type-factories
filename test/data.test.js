@@ -15,7 +15,7 @@ describe('Testing Data', function () {
   });
 
   it('can be instantiated', function () {
-    const data = new this.Data({
+    new this.Data({
       isData: true,
       name: 'foo',
       count: 1,
@@ -109,7 +109,7 @@ describe('Testing Data', function () {
 
   it(`Prototype properties can't be deleted`, function () {
     this.execThrow(() => {
-      delete this.Data.prototype.toString
+      delete this.Data.prototype.toString;
     });
   });
 
@@ -123,9 +123,6 @@ describe('Testing Data', function () {
           count: 1,
         };
         const d = new this.Data(a);
-
-        let b;
-        let func;
 
         switch(name) {
         case '__defineGetter__': case '__defineSetter__':

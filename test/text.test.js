@@ -22,8 +22,8 @@ describe('Testing Text', function () {
 
     this.execThrow = function (func) {
       expect(func).to.throw(TypeError);
-    }
-  })
+    };
+  });
 
   it('Initializing with anything is Ok', function () {
     this.execGood(this.create, 23);
@@ -112,16 +112,16 @@ describe('Testing Text', function () {
           break;
 
         case 'normalize':
-          expect(d[name]("NFKD")).to.equal(d.value[name]('NFKD'));
+          expect(d[name]('NFKD')).to.equal(d.value[name]('NFKD'));
           break;
 
         case 'localeCompare': case 'search': case 'match': case 'split':
           expect(d[name]('Hello')).to.eql(d.value[name]('Hello'));
-        break;
+          break;
 
         case 'replace': case 'concat':
           expect(d[name]('Hello', 'Hi')).to.eql(d.value[name]('Hello', 'Hi'));
-            break;
+          break;
 
         case 'substr': case 'substring': case 'slice':
           expect(d[name](2, 4)).to.eql(d.value[name](2, 4));

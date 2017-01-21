@@ -152,7 +152,9 @@ describe('List of Numbers (Number ctor)', function () {
           break;
 
         case 'forEach':
-          func = (a, i, arr) => {arr[i] = 2 * a;};
+          func = (a, i, arr) => {
+            arr[i] = 2 * a;
+          };
           b = a[name](func);
           expect(d[name](func)).to.eql(b);
           expect(d.value).to.eql(a);
@@ -253,10 +255,10 @@ describe('List of Numbers (Number ctor)', function () {
     const d = new this.List(1, 3, 5, 7);
     const a = [1, 3, 5, 7];
 
-    for (let key in a) {
+    for (let key in a) { // eslint-disable-line guard-for-in
       expect(d[key]).not.to.be.undefined;
     }
-    for (let key in d) {
+    for (let key in d) { // eslint-disable-line guard-for-in
       expect(key in a).to.be.true;
     }
   });
